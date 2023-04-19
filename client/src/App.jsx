@@ -10,6 +10,8 @@ import MyGigs from "./Pages/myGigs/MyGigs";
 import Message from "./Pages/message/Message";
 import Messages from "./Pages/messages/Messages";
 import Orders from "./Pages/orders/Orders";
+import Login from "./Pages/login/Login";
+import Register from "./Pages/register/Register";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 function App() {
@@ -59,6 +61,14 @@ function App() {
         {
           path: "/message/:id",
           element: <Message />,
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
         },
       ],
     },

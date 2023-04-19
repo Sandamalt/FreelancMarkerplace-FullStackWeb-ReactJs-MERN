@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// import newRequest from "../../utils/newRequest";
 import "./Navbar.scss";
-import { Link, useLocation } from "react-router-dom";
 
-const Navbar = () => {
+function Navbar() {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -14,46 +15,48 @@ const Navbar = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", isActive);
-
     return () => {
       window.removeEventListener("scroll", isActive);
     };
   }, []);
 
-  const currentUser = {
-    id: 1,
-    username: "Sandamal",
-    isSeller: true,
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await newRequest.post("/auth/logout");
+      localStorage.setItem("currentUser", null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
-          <Link to="/" className="link">
-            <span className="text"> Fiverr</span>
+          <Link className="link" to="/">
+            <span className="text">fiverr</span>
           </Link>
-          <span className="dot"> .</span>
+          <span className="dot">.</span>
         </div>
         <div className="links">
-          <span> Fiverr Business</span>
-          <span> Explore</span>
-          <span> English</span>
-          <span> Sign in</span>
-          {!currentUser?.isSeller && <span>Become a Seller </span>}
-          {!currentUser && <button>Join</button>}
-          {currentUser && (
+          <span>Fiverr Business</span>
+          <span>Explore</span>
+          <span>English</span>
+          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3-3zj8G9gN1nMK6CygVjfsQN3auL1oeaE2g&usqp=CAU"
-                alt=""
-              />
+              <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
               <span>{currentUser?.username}</span>
               {open && (
-                <div className="options ">
-                  {currentUser?.isSeller && (
+                <div className="options">
+                  {currentUser.isSeller && (
                     <>
-                      <Link className="link" to="/myGigs">
+                      <Link className="link" to="/mygigs">
                         Gigs
                       </Link>
                       <Link className="link" to="/add">
@@ -67,12 +70,21 @@ const Navbar = () => {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" to="/">
+                  <Link className="link" onClick={handleLogout}>
                     Logout
                   </Link>
                 </div>
               )}
             </div>
+          ) : (
+            <>
+              <Link to="/login" className="link">
+                Sign in
+              </Link>
+              <Link className="link" to="/register">
+                <button>Join</button>
+              </Link>
+            </>
           )}
         </div>
       </div>
@@ -81,38 +93,30 @@ const Navbar = () => {
           <hr />
           <div className="menu">
             <Link className="link menuLink" to="/">
-              Graphic & Design
+              Graphics & Design
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Video & Animation
             </Link>
-
-            <Link className="link" to="/">
-              Writing & Translations
+            <Link className="link menuLink" to="/">
+              Writing & Translation
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               AI Services
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Digital Marketing
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Music & Audio
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Programming & Tech
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Business
             </Link>
-
-            <Link className="link" to="/">
+            <Link className="link menuLink" to="/">
               Lifestyle
             </Link>
           </div>
@@ -121,6 +125,6 @@ const Navbar = () => {
       )}
     </div>
   );
-};
+}
 
 export default Navbar;

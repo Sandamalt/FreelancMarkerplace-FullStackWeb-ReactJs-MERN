@@ -25,8 +25,10 @@ export const login = async (req, res, next) => {
     if (!user) return next(createError(404, "User not found!"));
 
     const isCorrect = bcrypt.compareSync(req.body.password, user.password);
-    if (!isCorrect) return;
-    next(createError(400, "Wrong password or Username !"));
+    if (!isCorrect)
+      return next(
+        createError(400, "Wrong password or Username ! //methana enne")
+      );
 
     const token = jwt.sign(
       {

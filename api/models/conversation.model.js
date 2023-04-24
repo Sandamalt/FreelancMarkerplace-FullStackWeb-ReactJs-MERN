@@ -20,6 +20,10 @@ const ConversationSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    readByBuyer: {
+      type: Boolean,
+      required: true,
+    },
     lastMessage: {
       type: String,
       required: false,

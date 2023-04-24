@@ -39,7 +39,7 @@ const Gig = () => {
       {isLoading ? (
         "loading"
       ) : error ? (
-        "something went wrong !"
+        "something went wrong ! here_1"
       ) : (
         <div className="container">
           <div className="left">
@@ -51,7 +51,7 @@ const Gig = () => {
             {isLoadingUser ? (
               "loading"
             ) : errorUser ? (
-              "something went wrong !"
+              "something went wrong ! here 2"
             ) : (
               <div className="user">
                 <img
@@ -83,7 +83,7 @@ const Gig = () => {
             {isLoadingUser ? (
               "loading"
             ) : errorUser ? (
-              "something went wrong !"
+              "something went wrong ! here 3"
             ) : (
               <div className="seller">
                 <h2>About The Seller</h2>

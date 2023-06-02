@@ -1,13 +1,8 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import "./Messages.scss";
 import { Link } from "react-router-dom";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
+import "./Messages.scss";
 import moment from "moment";
 
 const Messages = () => {
@@ -28,7 +23,7 @@ const Messages = () => {
       return newRequest.put(`/conversations/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries("conversations");
+      queryClient.invalidateQueries(["conversations"]);
     },
   });
 
@@ -46,21 +41,16 @@ const Messages = () => {
         <div className="container">
           <div className="title">
             <h1>Messages</h1>
-            {/* //* Reminder : ADD Button to this */}
-            {/* <Link to="/add">
-            <button>Add New Gig</button>
-          </Link> */}
           </div>
           <table>
-            <tr>
-              {/* <thead> */}
-              <th> {currentUser?.isSeller ? "Buyer" : "Seller"}</th>
-              <th> Last Message</th>
-              <th> Date</th>
-              {/* <th> {currentUser?.isSeller ? "Buyer" : "Seller"}</th> */}
-              <th> Action</th>
-              {/* </thead> */}
-            </tr>
+            <thead>
+              <tr>
+                <th>{currentUser.isSeller ? "Buyer" : "Seller"}</th>
+                <th>Last Message</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
             <tbody>
               {data.map((c) => (
                 <tr
@@ -79,7 +69,6 @@ const Messages = () => {
                   </td>
                   <td>{moment(c.updatedAt).fromNow()}</td>
                   <td>
-                    {" "}
                     {((currentUser.isSeller && !c.readBySeller) ||
                       (!currentUser.isSeller && !c.readByBuyer)) && (
                       <button onClick={() => handleRead(c.id)}>

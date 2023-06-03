@@ -1,15 +1,13 @@
 import React from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import Reviews from "../../components/reviews/Reviews";
 
 const Gig = () => {
   const { id } = useParams();
-
-  // console.log(params);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["gig"],
@@ -64,7 +62,7 @@ const Gig = () => {
                   <div className="stars">
                     {Array(Math.round(data.totalStars / data.starNumber))
                       .fill()
-                      .map((item, i) => (
+                      .map((_, i) => (
                         <img src="/img/star.png" alt="" key={i} />
                       ))}
                     <span>{Math.round(data.totalStars / data.starNumber)}</span>
@@ -73,8 +71,8 @@ const Gig = () => {
               </div>
             )}
             <Slider slidesToShow={1} arrowsScroll={1} className="slider">
-              {data.images.map((img) => (
-                <img key={img} src={img} alt="" />
+              {data.images.map((img, index) => (
+                <img key={index} src={img} alt="" />
               ))}
             </Slider>
             <h2>About This Gig</h2>
@@ -95,7 +93,7 @@ const Gig = () => {
                       <div className="stars">
                         {Array(Math.round(data.totalStars / data.starNumber))
                           .fill()
-                          .map((item, i) => (
+                          .map((_, i) => (
                             <img src="/img/star.png" alt="" key={i} />
                           ))}
 
@@ -155,18 +153,21 @@ const Gig = () => {
               </div>
             </div>
             <div className="features">
-              {data.features.map((feature) => (
-                <div className="item" key={feature}>
+              {data.features.map((feature, index) => (
+                <div className="item" key={index}>
                   <img src="/img/greencheck.png" alt="" />
                   <span>{feature}</span>
                 </div>
               ))}
             </div>
-            <button>Continue</button>
+            <Link to={`/pay/${id}`}>
+              <button>Continue</button>
+            </Link>
           </div>
         </div>
       )}
     </div>
+    // console.log(id);
   );
 };
 

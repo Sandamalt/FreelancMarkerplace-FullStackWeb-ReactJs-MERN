@@ -6,6 +6,10 @@ import Stripe from "stripe";
 export const intent = async (req, res, next) => {
   const stripe = new Stripe(process.env.STRIPE);
 
+  // const stripe = new Stripe(
+  //   "sk_test_51NEd8sD3z2XeeqOVZPVjghNDg5JoF5LZTBZuSUbGj9pY3MVMwTJ3Bjopb1kiTf0K1wmpzBPNiNMfA5CutSVKMJTe00Ek9OTpcB"
+  // );
+
   const gig = await Gig.findById(req.params.id);
 
   // Create a PaymentIntent with the order amount and currency
@@ -63,6 +67,25 @@ export const getOrders = async (req, res, next) => {
     });
 
     res.status(200).send(orders);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const confirm = async (req, res, next) => {
+  try {
+    const orders = await Order.findOneAndUpdate(
+      {
+        payment_intent: req.body.payment_intent,
+      },
+      {
+        $set: {
+          isCompleted: true,
+        },
+      }
+    );
+
+    res.status(200).send("Order has been confirmed");
   } catch (err) {
     next(err);
   }
